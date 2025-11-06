@@ -26,8 +26,11 @@ pipeline {
         
         stage('Run Application') {
             steps {
+                // 1. Mata o processo Java (Taskkill continua o mais simples)
                 bat 'taskkill /f /im java.exe || exit 0'
-                bat 'cmd /c start /B java -jar target\\testeAPI-1.0-SNAPSHOT.jar --server.port=8081'
+
+                // 2. INICIA A API USANDO POWERSHELL PARA GARANTIR BACKGROUND
+                powershell "Start-Process java -ArgumentList \"-jar target\\testeAPI-1.0-SNAPSHOT.jar --server.port=8081\" -NoNewWindow"
             }
         }
     }
